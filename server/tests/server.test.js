@@ -43,7 +43,7 @@ describe('POST /todos', () => {
         }
 
         Todo.find().then((todos) => {
-          expect(todos.length).toBe(1);
+          expect(todos.length).toBe(0);
           done();
         }).catch((err)=>done(err));
       })
