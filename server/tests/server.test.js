@@ -4,7 +4,7 @@ const {ObjectID} = require('mongodb');
 const{app} = require('./../server.js');
 const{Todo} = require('./../models/todo.js');
 
-const todos = [{
+var todos = [{
   _id: new ObjectID(),
   text:'First test todo'
 }, {
@@ -98,4 +98,40 @@ describe('GET /todos/:id', () => {
       .end(done);
   });
 
+});
+
+describe('DELETE /todos/:id',() => {
+  it('Should remove a Todo with given VALID ID', (done) => {
+    var hexId = (todos[1]._id).toHexString();
+    request(app)
+      .delete(`/todos/${hexId}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todo._id).toBe(hexId);
+      })
+      .end((err,res) => {
+        if(err){
+          return done(err);
+        }
+        Todo.findById(hexId).then((todo) => {
+          expect(todo).toNotExist();
+          done();
+        }).catch((e) => done(e));
+      });
+  });
+
+  it('Should return 404 if Todo not found', (done) => {
+    var hexId = (new ObjectID()).toHexString();
+    request(app)
+      .delete(`/todos/${hexId}`)
+      .expect(404)
+      .end(done);
+  });
+
+  it('Should return 404 for invalid ID', (done) => {
+    request(app)
+      .delete(`/todos/123123123123abc`)
+      .expect(404)
+      .end(done);
+  });
 });
