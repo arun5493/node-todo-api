@@ -68,10 +68,6 @@ app.delete('/todos/:id', (req,res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Started app on port ${port}`);
-});
-
 app.patch('/todos/:id', (req,res) => {
   var id = req.params.id;
   var body = _.pick(req.body, ['text', 'completed']);
@@ -96,6 +92,11 @@ app.patch('/todos/:id', (req,res) => {
     res.status(400).send();
   })
 });
+
+app.listen(port, () => {
+  console.log(`Started app on port ${port}`);
+});
+
 
 
 module.exports = {app};
