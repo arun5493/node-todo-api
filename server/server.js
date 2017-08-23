@@ -1,6 +1,8 @@
 // cd ~/mongo/bin/
 // ./mongod --dbpath ~/mongo-data
 
+require('./config/config.js');
+
 var {ObjectID} = require('mongodb');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -12,7 +14,7 @@ var {User} = require('./models/user.js');
 
 
 var app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT; // || 3000;No need this as we took care of this in first if-else block
 
 app.use(bodyParser.json());
 
